@@ -4,10 +4,11 @@ import (
 	"github.com/siddontang/go/hack"
 	"github.com/siddontang/go/num"
 
-	"github.com/siddontang/ledisdb/config"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/r0123r/vredis/config"
 )
 
 func pingCommand(c *client) error {
@@ -186,8 +187,8 @@ func init() {
 	register("echo", echoCommand)
 	register("select", selectCommand)
 	register("info", infoCommand)
-	register("flushall", flushallCommand)
-	register("flushdb", flushdbCommand)
+	//	register("flushall", flushallCommand)
+	//	register("flushdb", flushdbCommand)
 	register("time", timeCommand)
 	register("config", configCommand)
 }

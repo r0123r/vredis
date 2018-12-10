@@ -29,13 +29,13 @@ func (l *accessLog) Close() {
 	l.l.Close()
 }
 
-func (l *accessLog) Log(remoteAddr string, usedTime int64, request []byte, err error) {
+func (l *accessLog) Log(remoteAddr string, bd int, usedTime int64, request []byte, err error) {
 
-	format := `%s %q %d [%s]`
+	format := `%s [%d] %q %d [%s]`
 
 	if err == nil {
-		l.l.Infof(format, remoteAddr, request, usedTime, "OK")
+		l.l.Infof(format, remoteAddr, bd, request, usedTime, "OK")
 	} else {
-		l.l.Infof(format, remoteAddr, request, usedTime, err.Error())
+		l.l.Infof(format, remoteAddr, bd, request, usedTime, err.Error())
 	}
 }

@@ -8,7 +8,7 @@ import (
 
 	"github.com/siddontang/go/hack"
 	"github.com/siddontang/go/num"
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/r0123r/vredis/ledis"
 )
 
 func parseXScanArgs(args [][]byte) (cursor []byte, match string, count int, desc bool, err error) {

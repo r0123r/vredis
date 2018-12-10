@@ -7,7 +7,7 @@ package rocksdb
 import "C"
 
 import (
-	"github.com/siddontang/ledisdb/store/driver"
+	"github.com/r0123r/vredis/store/driver"
 )
 
 type Snapshot struct {

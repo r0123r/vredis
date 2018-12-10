@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/r0123r/vredis/ledis"
 	"github.com/siddontang/go/sync2"
-	"github.com/siddontang/ledisdb/ledis"
 )
 
 type info struct {
@@ -69,6 +69,8 @@ func (i *info) Dump(section string) []byte {
 		i.dumpServer(buf)
 	case "mem":
 		i.dumpMem(buf)
+	case "memory":
+		i.dumpMemory(buf)
 	case "gc":
 		i.dumpGC(buf)
 	case "store":
@@ -94,6 +96,8 @@ func (i *info) dumpAll(buf *bytes.Buffer) {
 	buf.Write(Delims)
 	i.dumpMem(buf)
 	buf.Write(Delims)
+	i.dumpMemory(buf)
+	buf.Write(Delims)
 	i.dumpGC(buf)
 	buf.Write(Delims)
 	i.dumpReplication(buf)
@@ -111,7 +115,17 @@ func (i *info) dumpServer(buf *bytes.Buffer) {
 		infoPair{"cgo_call_num", runtime.NumCgoCall()},
 		infoPair{"resp_client_num", i.app.respClientNum()},
 		infoPair{"ledisdb_version", ledis.Version},
+		infoPair{"redis_version", "vredis " + i.app.build},
 	)
+}
+
+func (i *info) dumpMemory(buf *bytes.Buffer) {
+	buf.WriteString("# Memory\r\n")
+
+	var mem runtime.MemStats
+	runtime.ReadMemStats(&mem)
+
+	i.dumpPairs(buf, infoPair{"used_memory", mem.Sys})
 }
 
 func (i *info) dumpMem(buf *bytes.Buffer) {

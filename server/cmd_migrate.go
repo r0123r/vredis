@@ -10,7 +10,7 @@ import (
 	"github.com/siddontang/go/hack"
 	"github.com/siddontang/go/log"
 	"github.com/siddontang/goredis"
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/r0123r/vredis/ledis"
 )
 
 func dumpCommand(c *client) error {

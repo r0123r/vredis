@@ -3,7 +3,7 @@ package server
 import (
 	"strconv"
 
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/r0123r/vredis/ledis"
 )
 
 // func getCommand(c *client) error {
@@ -522,8 +522,8 @@ func init() {
 	register("bitpos", bitposCommand)
 	register("decr", decrCommand)
 	register("decrby", decrbyCommand)
-	register("del", delCommand)
-	register("exists", existsCommand)
+	//	register("del", delCommand)
+	//	register("exists", existsCommand)
 	register("get", getCommand)
 	register("getbit", getbitCommand)
 	register("getrange", getrangeCommand)
@@ -532,14 +532,14 @@ func init() {
 	register("incrby", incrbyCommand)
 	register("mget", mgetCommand)
 	register("mset", msetCommand)
-	register("set", setCommand)
+	//register("set", setCommand)
 	register("setbit", setbitCommand)
 	register("setnx", setnxCommand)
 	register("setex", setexCommand)
 	register("setrange", setrangeCommand)
 	register("strlen", strlenCommand)
-	register("expire", expireCommand)
+	//	register("expire", expireCommand)
 	register("expireat", expireAtCommand)
-	register("ttl", ttlCommand)
+	//	register("ttl", ttlCommand)
 	register("persist", persistCommand)
 }

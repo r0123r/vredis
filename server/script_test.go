@@ -3,7 +3,7 @@ package server
 import (
 	"fmt"
 
-	"github.com/siddontang/ledisdb/config"
+	"github.com/r0123r/vredis/config"
 	"github.com/yuin/gopher-lua"
 
 	"testing"

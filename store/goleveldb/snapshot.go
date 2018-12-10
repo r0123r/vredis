@@ -1,7 +1,7 @@
 package goleveldb
 
 import (
-	"github.com/siddontang/ledisdb/store/driver"
+	"github.com/r0123r/vredis/store/driver"
 	"github.com/syndtr/goleveldb/leveldb"
 )
 

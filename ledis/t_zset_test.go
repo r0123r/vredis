@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/siddontang/ledisdb/store"
+	"github.com/r0123r/vredis/store"
 )
 
 const (

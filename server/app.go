@@ -11,14 +11,15 @@ import (
 	"sync"
 
 	"crypto/tls"
+
+	"github.com/r0123r/vredis/config"
+	"github.com/r0123r/vredis/ledis"
 	"github.com/siddontang/goredis"
-	"github.com/siddontang/ledisdb/config"
-	"github.com/siddontang/ledisdb/ledis"
 )
 
 type App struct {
-	cfg *config.Config
-
+	cfg          *config.Config
+	build        string
 	listener     net.Listener
 	httpListener net.Listener
 
@@ -83,14 +84,14 @@ func listen(netType, laddr string, tlsCfg *tls.Config) (net.Listener, error) {
 	return net.Listen(netType, laddr)
 }
 
-func NewApp(cfg *config.Config) (*App, error) {
+func NewApp(cfg *config.Config, build string) (*App, error) {
 	if len(cfg.DataDir) == 0 {
 		println("use default datadir %s", config.DefaultDataDir)
 		cfg.DataDir = config.DefaultDataDir
 	}
 
 	app := new(App)
-
+	app.build = build
 	app.quit = make(chan struct{})
 
 	app.closed = false

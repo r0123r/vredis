@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/siddontang/ledisdb/config"
+	"github.com/r0123r/vredis/config"
 )
 
 func TestMigrate(t *testing.T) {
