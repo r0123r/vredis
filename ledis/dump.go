@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/siddontang/go/snappy"
-	"github.com/siddontang/ledisdb/store"
+	"github.com/r0123r/vredis/store"
 )
 
 // DumpHead is the head of a dump.

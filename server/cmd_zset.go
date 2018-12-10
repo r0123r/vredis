@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/r0123r/vredis/ledis"
+	"github.com/r0123r/vredis/store"
 	"github.com/siddontang/go/hack"
 	"github.com/siddontang/go/num"
-	"github.com/siddontang/ledisdb/ledis"
-	"github.com/siddontang/ledisdb/store"
 )
 
 //for simple implementation, we only support int64 score
@@ -785,7 +785,7 @@ func init() {
 	register("zrange", zrangeCommand)
 	register("zrangebyscore", zrangebyscoreCommand)
 	register("zrank", zrankCommand)
-	register("zrem", zremCommand)
+	//	register("zrem", zremCommand)
 	register("zremrangebyrank", zremrangebyrankCommand)
 	register("zremrangebyscore", zremrangebyscoreCommand)
 	register("zrevrange", zrevrangeCommand)

@@ -12,11 +12,11 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/r0123r/vredis/ledis"
 	"github.com/siddontang/go/hack"
 	"github.com/siddontang/go/log"
 	"github.com/siddontang/go/num"
 	"github.com/siddontang/goredis"
-	"github.com/siddontang/ledisdb/ledis"
 )
 
 var errReadRequest = errors.New("invalid request protocol")
@@ -25,8 +25,8 @@ var errClientQuit = errors.New("remote client quit")
 type respClient struct {
 	*client
 
-	conn net.Conn
-
+	conn       net.Conn
+	sub        map[string]chan []interface{}
 	respReader *goredis.RespReader
 
 	activeQuit bool
@@ -77,7 +77,7 @@ func newClientRESP(conn net.Conn, app *App) {
 		tcpConn.SetReadBuffer(app.cfg.ConnReadBufferSize)
 		tcpConn.SetWriteBuffer(app.cfg.ConnWriteBufferSize)
 	}
-
+	c.sub = make(map[string]chan []interface{}, 0)
 	br := bufio.NewReaderSize(conn, app.cfg.ConnReadBufferSize)
 	c.respReader = goredis.NewRespReader(br)
 
@@ -87,7 +87,7 @@ func newClientRESP(conn net.Conn, app *App) {
 	app.connWait.Add(1)
 
 	app.addRespClient(c)
-
+	c.app.access.Log(c.remoteAddr, c.db.Index(), 0, []byte("__Open"), nil)
 	go c.run()
 }
 
@@ -180,8 +180,14 @@ func (c *respClient) handleRequest(reqData [][]byte) error {
 		p.Signal(os.Interrupt)
 
 		return errClientQuit
+	} else if c.cmd == "subscribe" {
+		for _, key := range c.args {
+			c.sub[string(key)] = make(chan []interface{})
+			c.resp.writeArray([]interface{}{[]byte("subscribe"), key, int64(1)})
+		}
+		c.resp.flush()
+		return nil
 	}
-
 	c.perform()
 
 	return nil

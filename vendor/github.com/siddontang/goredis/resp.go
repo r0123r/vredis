@@ -95,6 +95,7 @@ func (resp *RespReader) ParseRequest() ([][]byte, error) {
 	if len(line) == 0 {
 		return nil, errors.New("short resp line")
 	}
+
 	switch line[0] {
 	case '*':
 		n, err := parseLen(line[1:])

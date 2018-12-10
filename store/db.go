@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/siddontang/ledisdb/config"
-	"github.com/siddontang/ledisdb/store/driver"
+	"github.com/r0123r/vredis/config"
+	"github.com/r0123r/vredis/store/driver"
 )
 
 type DB struct {

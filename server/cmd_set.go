@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/r0123r/vredis/ledis"
 )
 
 func saddCommand(c *client) error {
@@ -284,7 +284,7 @@ func init() {
 	register("sinterstore", sinterstoreCommand)
 	register("sismember", sismemberCommand)
 	register("smembers", smembersCommand)
-	register("srem", sremCommand)
+	//	register("srem", sremCommand)
 	register("sunion", sunionCommand)
 	register("sunionstore", sunionstoreCommand)
 

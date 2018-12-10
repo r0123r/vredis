@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/siddontang/go/hack"
-	"github.com/siddontang/ledisdb/store"
+	"github.com/r0123r/vredis/store"
 )
 
 // For zset const.

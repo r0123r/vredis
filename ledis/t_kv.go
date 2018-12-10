@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/siddontang/go/num"
-	"github.com/siddontang/ledisdb/store"
+	"github.com/r0123r/vredis/store"
 )
 
 // KVPair is the pair of key-value.

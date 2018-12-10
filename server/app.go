@@ -11,9 +11,10 @@ import (
 	"sync"
 
 	"crypto/tls"
+
+	"github.com/r0123r/vredis/config"
+	"github.com/r0123r/vredis/ledis"
 	"github.com/siddontang/goredis"
-	"github.com/siddontang/ledisdb/config"
-	"github.com/siddontang/ledisdb/ledis"
 )
 
 type App struct {

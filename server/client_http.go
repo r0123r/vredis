@@ -11,7 +11,7 @@ import (
 	"github.com/siddontang/go/bson"
 	"github.com/siddontang/go/hack"
 	"github.com/siddontang/go/log"
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/r0123r/vredis/ledis"
 	"github.com/ugorji/go/codec"
 )
 

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/r0123r/vredis/ledis"
 	"github.com/siddontang/go/sync2"
-	"github.com/siddontang/ledisdb/ledis"
 )
 
 type responseWriter interface {
@@ -66,7 +66,7 @@ func newClient(app *App) *client {
 }
 
 func (c *client) close() {
-
+	c.app.access.Log(c.remoteAddr, c.db.Index(), 0, []byte("__Close"), nil)
 }
 
 func (c *client) authEnabled() bool {
@@ -101,7 +101,7 @@ func (c *client) perform() {
 			truncateLen = 256
 		}
 
-		c.app.access.Log(c.remoteAddr, cost, fullCmd[:truncateLen], err)
+		c.app.access.Log(c.remoteAddr, c.db.Index(), cost, fullCmd[:truncateLen], err)
 	}
 
 	if err != nil {

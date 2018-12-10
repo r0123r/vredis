@@ -12,8 +12,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/siddontang/ledisdb/config"
-	"github.com/siddontang/ledisdb/server"
+	"github.com/r0123r/vredis/config"
+	"github.com/r0123r/vredis/server"
 )
 
 var configFile = flag.String("config", "", "ledisdb config file")
@@ -87,7 +87,7 @@ func main() {
 	if *ttlCheck > 0 {
 		cfg.TTLCheckInterval = *ttlCheck
 	}
-
+	cfg.AccessLog = "log"
 	var app *server.App
 	app, err = server.NewApp(cfg)
 	if err != nil {

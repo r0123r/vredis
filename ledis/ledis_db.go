@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/siddontang/ledisdb/store"
+	"github.com/r0123r/vredis/store"
 )
 
 type ibucket interface {

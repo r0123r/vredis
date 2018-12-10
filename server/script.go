@@ -10,7 +10,7 @@ import (
 
 	"github.com/siddontang/go/hack"
 	"github.com/siddontang/go/num"
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/r0123r/vredis/ledis"
 	"github.com/yuin/gopher-lua"
 
 	luajson "github.com/glendc/gopher-json"

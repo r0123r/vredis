@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/siddontang/go/sync2"
-	"github.com/siddontang/ledisdb/ledis"
+	"github.com/r0123r/vredis/ledis"
 )
 
 type info struct {
