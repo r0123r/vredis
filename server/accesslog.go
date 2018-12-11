@@ -15,7 +15,7 @@ type accessLog struct {
 func newAcessLog(baseName string) (*accessLog, error) {
 	l := new(accessLog)
 
-	h, err := log.NewTimeRotatingFileHandler(baseName, log.WhenDay, 1)
+	h, err := log.NewRotatingFileHandler(baseName, 1024*1024*30, 2)
 	if err != nil {
 		return nil, err
 	}
