@@ -18,7 +18,7 @@ var (
 )
 
 const (
-	DefaultAddr string = "127.0.0.1:6380"
+	DefaultAddr string = "0.0.0.0:6380"
 
 	DefaultDBName string = "goleveldb"
 

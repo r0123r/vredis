@@ -381,7 +381,9 @@ func strlenCommand(c *client) error {
 	if len(c.args) != 1 {
 		return ErrCmdParams
 	}
-
+	if n, _ := c.db.Exists(c.args[0]); n != 1 {
+		return errNoKey
+	}
 	if n, err := c.db.StrLen(c.args[0]); err != nil {
 		return err
 	} else {

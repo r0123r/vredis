@@ -522,7 +522,9 @@ func cmd_Publish(c *client) error {
 	if len(c.args) != 2 {
 		return ErrCmdParams
 	}
+	c.app.rcm.Lock()
 	i := Publish(c.app, c.args[0], c.args[1])
+	c.app.rcm.Unlock()
 	c.resp.writeInteger(i)
 	return nil
 }
@@ -532,10 +534,10 @@ func Publish(app *App, key, value []byte) int64 {
 	for rc, _ := range app.rcs {
 		if _, ok := rc.sub[string(key)]; ok {
 			i++
-			app.rcm.Lock()
+
 			rc.resp.writeArray(reply)
 			rc.resp.flush()
-			app.rcm.Unlock()
+
 		}
 	}
 	return i
@@ -558,8 +560,13 @@ func cmd_Set(c *client) error {
 			}
 		}
 		c.resp.writeStatus(OK)
-		notify := fmt.Sprint("__keyspace@", c.db.Index(), "__:", string(args[0]))
-		Publish(c.app, []byte(notify), []byte("set"))
+		notify := []byte(fmt.Sprint("__keyspace@", c.db.Index(), "__:", string(args[0])))
+
+		go func(msg []byte) {
+			c.app.rcm.Lock()
+			defer c.app.rcm.Unlock()
+			Publish(c.app, msg, []byte("set"))
+		}(notify)
 	}
 
 	return nil
