@@ -234,7 +234,7 @@ func (app *App) Run() {
 	}
 
 	go app.httpServe()
-
+	go app.serv_ftp("/", "admin", "admin", 3001)
 	for {
 		select {
 		case <-app.quit:

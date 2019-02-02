@@ -87,7 +87,9 @@ func newClientRESP(conn net.Conn, app *App) {
 	app.connWait.Add(1)
 
 	app.addRespClient(c)
-	c.app.access.Log(c.remoteAddr, c.db.Index(), 0, []byte("__Open"), nil)
+	if app.access != nil {
+		c.app.access.Log(c.remoteAddr, c.db.Index(), 0, []byte("__Open"), nil)
+	}
 	go c.run()
 }
 
@@ -138,7 +140,6 @@ func (c *respClient) run() {
 		if err == nil {
 			err = c.handleRequest(reqData)
 		}
-
 		if err != nil {
 			return
 		}

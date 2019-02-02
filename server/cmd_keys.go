@@ -196,32 +196,71 @@ func cmd_Keys(c *client) error {
 
 	var values, val [][]byte
 	match := patternRE(string(c.args[0]))
-	cursor := []byte("0")
-	count := -1
-	values, err = c.db.Scan(ledis.KV, cursor, count, false, match)
-	if err != nil {
-		return err
+	cursor := []byte{}
+	count := 10
+	for {
+		val, err = c.db.Scan(ledis.KV, cursor, count, false, match)
+		if err != nil {
+			return err
+		}
+		values = append(values, val...)
+		if len(val) < count {
+			cursor = []byte{}
+			break
+		}
+		cursor = val[len(val)-1]
 	}
-	val, err = c.db.Scan(ledis.LIST, cursor, count, false, match)
-	if err != nil {
-		return err
+	for {
+		val, err = c.db.Scan(ledis.LIST, cursor, count, false, match)
+		if err != nil {
+			return err
+		}
+		values = append(values, val...)
+		if len(val) < count {
+			cursor = []byte{}
+			break
+		}
+		cursor = val[len(val)-1]
 	}
-	values = append(values, val...)
-	val, err = c.db.Scan(ledis.SET, cursor, count, false, match)
-	if err != nil {
-		return err
+	for {
+		val, err = c.db.Scan(ledis.SET, cursor, count, false, match)
+		if err != nil {
+			return err
+		}
+		values = append(values, val...)
+
+		if len(val) < count {
+			cursor = []byte{}
+			break
+		}
+		cursor = val[len(val)-1]
 	}
-	values = append(values, val...)
-	val, err = c.db.Scan(ledis.ZSET, cursor, count, false, match)
-	if err != nil {
-		return err
+	for {
+		val, err = c.db.Scan(ledis.ZSET, cursor, count, false, match)
+		if err != nil {
+			return err
+		}
+		values = append(values, val...)
+
+		if len(val) < count {
+			cursor = []byte{}
+			break
+		}
+		cursor = val[len(val)-1]
 	}
-	values = append(values, val...)
-	val, err = c.db.Scan(ledis.HASH, cursor, count, false, match)
-	if err != nil {
-		return err
+	for {
+		val, err = c.db.Scan(ledis.HASH, cursor, count, false, match)
+		if err != nil {
+			return err
+		}
+		values = append(values, val...)
+
+		if len(val) < count {
+			cursor = []byte{}
+			break
+		}
+		cursor = val[len(val)-1]
 	}
-	values = append(values, val...)
 
 	c.resp.writeSliceArray(values)
 	return nil
@@ -435,6 +474,7 @@ func init() {
 	register("publish", cmd_Publish)
 	register("set", cmd_Set)
 	register("keys", cmd_Keys)
+	register("dump", cmd_Dump)
 }
 func cmd_Expire(c *client) error {
 	args := c.args
@@ -567,6 +607,35 @@ func cmd_Set(c *client) error {
 			defer c.app.rcm.Unlock()
 			Publish(c.app, msg, []byte("set"))
 		}(notify)
+	}
+
+	return nil
+}
+
+func cmd_Dump(c *client) error {
+	if len(c.args) != 1 {
+		return ErrCmdParams
+	}
+	var data []byte
+	var err error
+	key := c.args[0]
+	if ok, _ := c.db.Exists(key); ok == 1 {
+		data, err = c.db.Dump(key)
+	} else if ok, _ := c.db.LKeyExists(key); ok == 1 {
+		data, err = c.db.LDump(key)
+	} else if ok, _ := c.db.SKeyExists(key); ok == 1 {
+		data, err = c.db.SDump(key)
+	} else if ok, _ := c.db.ZKeyExists(key); ok == 1 {
+		data, err = c.db.ZDump(key)
+	} else if ok, _ := c.db.HKeyExists(key); ok == 1 {
+		data, err = c.db.HDump(key)
+	} else {
+		return ErrNotFound
+	}
+	if err != nil {
+		return err
+	} else {
+		c.resp.writeBulk(data)
 	}
 
 	return nil

@@ -7,10 +7,10 @@ import (
 	"sync"
 	"time"
 
+	"github.com/r0123r/vredis/ledis"
 	"github.com/siddontang/go/hack"
 	"github.com/siddontang/go/log"
 	"github.com/siddontang/goredis"
-	"github.com/r0123r/vredis/ledis"
 )
 
 func dumpCommand(c *client) error {
@@ -521,7 +521,7 @@ func migrateAllTypeKeys(c *client, conn *goredis.PoolConn, key []byte, timeout i
 }
 
 func init() {
-	register("dump", dumpCommand)
+	register("kdump", dumpCommand)
 	register("ldump", ldumpCommand)
 	register("hdump", hdumpCommand)
 	register("sdump", sdumpCommand)

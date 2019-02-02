@@ -66,7 +66,9 @@ func newClient(app *App) *client {
 }
 
 func (c *client) close() {
-	c.app.access.Log(c.remoteAddr, c.db.Index(), 0, []byte("__Close"), nil)
+	if c.app.access != nil {
+		c.app.access.Log(c.remoteAddr, c.db.Index(), 0, []byte("__Close"), nil)
+	}
 }
 
 func (c *client) authEnabled() bool {

@@ -10,12 +10,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/siddontang/go/log"
 	"github.com/r0123r/vredis/config"
+	"github.com/siddontang/go/log"
 )
 
 const (
-	snapshotTimeFormat = "2006-01-02T15:04:05.999999999"
+	snapshotTimeFormat = "2006-01-02T15_04_05.999999999"
 )
 
 type snapshotStore struct {

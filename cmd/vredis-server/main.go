@@ -39,16 +39,16 @@ func main() {
 
 	var cfg *config.Config
 	var err error
-	println("Build date:", Build)
+	log.Println("Build date:", Build)
 	if len(*configFile) == 0 {
-		println("no config set, using default config")
+		log.Println("no config set, using default config")
 		cfg = config.NewConfigDefault()
 	} else {
 		cfg, err = config.NewConfigWithFile(*configFile)
 	}
 
 	if err != nil {
-		println(err.Error())
+		log.Println(err.Error())
 		return
 	}
 
@@ -90,11 +90,11 @@ func main() {
 	if *ttlCheck > 0 {
 		cfg.TTLCheckInterval = *ttlCheck
 	}
-	cfg.AccessLog = "log"
+	//cfg.AccessLog = "log"
 	var app *server.App
 	app, err = server.NewApp(cfg, Build)
 	if err != nil {
-		println(err.Error())
+		log.Println(err.Error())
 		return
 	}
 
@@ -117,7 +117,7 @@ func main() {
 
 	<-sc
 
-	println("ledis-server is closing")
+	log.Println("vredis-server is closing")
 	app.Close()
-	println("ledis-server is closed")
+	log.Println("vredis-server is closed")
 }
