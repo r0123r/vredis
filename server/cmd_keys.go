@@ -376,21 +376,52 @@ func cmd_Rename(c *client) error {
 func cmd_DbSize(c *client) error {
 
 	count := int(0)
+	cursor := []byte{}
 	var keys [][]byte
-	keys, _ = c.db.Scan(ledis.KV, []byte("0"), -1, false, ".*")
-	count += len(keys)
-
-	keys, _ = c.db.Scan(ledis.LIST, []byte("0"), -1, false, ".*")
-	count += len(keys)
-
-	keys, _ = c.db.Scan(ledis.SET, []byte("0"), -1, false, ".*")
-	count += len(keys)
-
-	keys, _ = c.db.Scan(ledis.ZSET, []byte("0"), -1, false, ".*")
-	count += len(keys)
-
-	keys, _ = c.db.Scan(ledis.HASH, []byte("0"), -1, false, ".*")
-	count += len(keys)
+	for {
+		keys, _ = c.db.Scan(ledis.KV, cursor, 100, false, ".*")
+		count += len(keys)
+		if len(keys) < 100 {
+			break
+		}
+		cursor = keys[len(keys)-1]
+	}
+	cursor = []byte{}
+	for {
+		keys, _ = c.db.Scan(ledis.LIST, cursor, 100, false, ".*")
+		count += len(keys)
+		if len(keys) < 100 {
+			break
+		}
+		cursor = keys[len(keys)-1]
+	}
+	cursor = []byte{}
+	for {
+		keys, _ = c.db.Scan(ledis.SET, cursor, 100, false, ".*")
+		count += len(keys)
+		if len(keys) < 100 {
+			break
+		}
+		cursor = keys[len(keys)-1]
+	}
+	cursor = []byte{}
+	for {
+		keys, _ = c.db.Scan(ledis.ZSET, cursor, 100, false, ".*")
+		count += len(keys)
+		if len(keys) < 100 {
+			break
+		}
+		cursor = keys[len(keys)-1]
+	}
+	cursor = []byte{}
+	for {
+		keys, _ = c.db.Scan(ledis.HASH, cursor, 100, false, ".*")
+		count += len(keys)
+		if len(keys) < 100 {
+			break
+		}
+		cursor = keys[len(keys)-1]
+	}
 	c.resp.writeInteger(int64(count))
 	return nil
 }

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/siddontang/go/num"
 	"github.com/r0123r/vredis/store"
+	"github.com/siddontang/go/num"
 )
 
 // KVPair is the pair of key-value.
@@ -501,7 +501,7 @@ func (db *DB) GetRange(key []byte, start int, end int) ([]byte, error) {
 // StrLen returns the length of the data.
 func (db *DB) StrLen(key []byte) (int64, error) {
 	s, err := db.GetSlice(key)
-	if err != nil {
+	if err != nil || s == nil {
 		return 0, err
 	}
 
